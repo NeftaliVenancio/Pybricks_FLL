@@ -46,7 +46,7 @@ La clase `Robot` facilita el control de movimientos básicos del robot, gestión
 robot = Robot(HUB=PrimeHub(), MotorI=Motor(Port.A), MotorD=Motor(Port.B),
               SensorColorI=ColorSensor(Port.C), SensorColorD=ColorSensor(Port.D))
 robot.girar(90)
-
+```
 
 ## Clase Instrumento
 
@@ -96,4 +96,45 @@ instrumento.calibrar()
 
 # Mover el instrumento a un ángulo de 90 grados
 instrumento.mover(angulo_objetivo=90)
+```
+
+## Clase InstrumentoDoble
+
+La clase `InstrumentoDoble` permite controlar dos instrumentos, como motores, simultáneamente. Está diseñada para situaciones donde se requiere sincronizar el movimiento de dos instrumentos, como en operaciones de precisión o cuando se manipulan objetos con el robot.
+
+### Atributos
+
+- `iI`: Motor del instrumento izquierdo.
+- `iD`: Motor del instrumento derecho.
+- `ls`: Límite superior de los ángulos de movimiento para ambos instrumentos.
+- `li`: Límite inferior de los ángulos de movimiento para ambos instrumentos.
+
+### Métodos
+
+- `__init__(self, instrumentoIzq, instrumentoDer, limite_superior, limite_inferior)`: Constructor de la clase. Inicializa los motores de los instrumentos con los parámetros especificados y establece los límites superior e inferior de movimiento.
+  
+- `calibrar(self, set_angulo=0)`: Calibra ambos instrumentos a un ángulo inicial. Útil para establecer una posición de referencia antes de comenzar operaciones.
+  
+- `mover(self, angulo_objetivo, velocidad=100)`: Mueve ambos instrumentos a un ángulo objetivo especificado, con la opción de ajustar la velocidad. Asegura que ambos instrumentos alcancen el ángulo deseado de forma sincronizada.
+
+- `print_angle(self)`: Imprime el ángulo actual de los motores de ambos instrumentos, proporcionando una forma rápida de verificar su estado.
+
+### Ejemplo de Uso
+
+```python
+# Inicialización de los motores para los instrumentos izquierdo y derecho
+instrumentoIzq = Motor(Port.F)
+instrumentoDer = Motor(Port.G)
+
+# Creación de la instancia de InstrumentoDoble
+instrumentoDoble = InstrumentoDoble(instrumentoIzq, instrumentoDer)
+
+# Calibración de los instrumentos a un ángulo inicial de 0 grados
+instrumentoDoble.calibrar()
+
+# Mover ambos instrumentos a un ángulo de 45 grados a una velocidad de 100
+instrumentoDoble.mover(45, 100)
+
+# Imprimir el ángulo actual de los instrumentos
+instrumentoDoble.print_angle()
 
