@@ -1,5 +1,19 @@
 # Pybricks_FLL
-Modulo de python (Pybricks) creado por el Equipo ROBOCOONS para el uso herramientas y navegación en competencias
+Modulo de python (Pybricks) creado por el Equipo ROBOCOONS 23747 para el uso herramientas y navegación en competencias que impliquen el uso de 
+los sets LEGO® Spike Prime.
+
+Se ha construido con la base de conocimientos que el equipo ha generado a lo largo de sus participaciones en competencias
+
+Codificad en Veracruz, Mexico con ❤️ por:
+
+ - Rodrgio Kai Cabrera
+ - Neftali Caicero Venancio
+ - Jose Pablo Contreras Dominguez
+ - Scarlett Elisett Sarabia Barradas
+ - Camila Navarrete Alarcón
+ - Cuauhtemoc Fuentes Navarro
+ - Mauricio Lascurain Ramirez
+ - André MArtinez Vega
 
 
 
