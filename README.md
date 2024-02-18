@@ -4,7 +4,7 @@ los sets LEGO® Spike Prime.
 
 Se ha construido con la base de conocimientos que el equipo ha generado a lo largo de sus participaciones en competencias
 
-Codificad en Veracruz, Mexico con ❤️ por:
+Codificado en Veracruz, Mexico con ❤️ por:
 
  - Rodrgio Kai Cabrera
  - Neftali Caicero Venancio
