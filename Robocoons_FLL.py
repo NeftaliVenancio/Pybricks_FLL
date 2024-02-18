@@ -160,3 +160,73 @@ class Instrumento:
         self.instrumento.run_angle(velocidad, movimiento)
         self.instrumento.hold()
 
+class InstrumentoDoble:
+    """
+    Clase para manejar dos instrumentos adicionales en un robot LEGO® SPIKE™ Prime simultáneamente.
+    Permite controlar dos motores como instrumentos de manera coordinada, ofreciendo métodos para calibrarlos
+    y moverlos a posiciones específicas dentro de un rango definido.
+
+    Atributos:
+        iI (Motor): Motor que actúa como el instrumento izquierdo.
+        iD (Motor): Motor que actúa como el instrumento derecho.
+        ls (int): Límite superior del rango de movimiento permitido para los instrumentos.
+        li (int): Límite inferior del rango de movimiento permitido para los instrumentos.
+
+    Métodos:
+        __init__: Inicializa una instancia de la clase InstrumentoDoble.
+        calibrar: Calibra ambos instrumentos a un ángulo inicial común.
+        mover: Mueve ambos instrumentos a un ángulo objetivo dentro de los límites establecidos.
+    """
+
+    def __init__(self, instrumentoIzq, instrumentoDer, limite_superior, limite_inferior):
+        """
+        Inicializa una nueva instancia de la clase InstrumentoDoble.
+
+        Parámetros:
+            instrumentoIzq (Motor): El motor que se utilizará como el instrumento izquierdo.
+            instrumentoDer (Motor): El motor que se utilizará como el instrumento derecho.
+            limite_superior (int): El límite superior del rango de movimiento permitido para los instrumentos.
+            limite_inferior (int): El límite inferior del rango de movimiento permitido para los instrumentos.
+        """
+        self.iI = instrumentoIzq
+        self.iD = instrumentoDer
+        self.ls = limite_superior
+        self.li = limite_inferior
+
+    def calibrar(self, set_angulo=0):
+        """
+        Calibra ambos instrumentos a un ángulo inicial común.
+
+        Parámetros:
+            set_angulo (int): Ángulo inicial al que se deben calibrar ambos instrumentos. Por defecto es 0.
+        """
+        # Ejemplo de implementación de calibración
+        self.iI.run_angle(100, -20, wait=False)
+        self.iD.run_angle(100, -20, wait=True)
+        self.iI.reset_angle(set_angulo)
+        self.iD.reset_angle(set_angulo)
+        self.iI.hold()
+        self.iD.hold()
+
+    def mover(self, angulo_objetivo, velocidad=100):
+        """
+        Mueve ambos instrumentos a un ángulo objetivo dentro de los límites establecidos de manera coordinada.
+
+        Parámetros:
+            angulo_objetivo (int): Ángulo objetivo al que se deben mover ambos instrumentos.
+            velocidad (int): Velocidad a la que se deben mover los instrumentos. Por defecto es 100.
+        """
+        # Implementación de ejemplo que mueve ambos instrumentos al ángulo objetivo
+        if angulo_objetivo > self.ls:
+            angulo_objetivo = self.ls
+        elif angulo_objetivo < self.li:
+            angulo_objetivo = self.li
+        
+        angulo_actual_iI = self.iI.angle()
+        angulo_actual_iD = self.iD.angle()
+        movimiento_iI = angulo_objetivo - angulo_actual_iI
+        movimiento_iD = angulo_objetivo - angulo_actual_iD
+        self.iI.run_angle(velocidad, movimiento_iI, wait=False)
+        self.iD.run_angle(velocidad, movimiento_iD, wait=True)
+        self.iI.hold()
+        self.iD.hold()
