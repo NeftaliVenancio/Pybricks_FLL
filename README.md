@@ -21,19 +21,79 @@ Codificado en Veracruz, Mexico con ❤️ por:
 
 Este proyecto incluye tres clases diseñadas para facilitar el control y la interacción con robots LEGO® SPIKE™ Prime: `Robot`, `Instrumento`, e `InstrumentoDoble`. Estas clases permiten un manejo detallado de los motores y sensores, así como la implementación de funcionalidades específicas como la calibración y movimientos precisos de instrumentos.
 
+
 ## Clase Robot
 
-### Descripción
-La clase `Robot` está diseñada para controlar los movimientos básicos del robot, incluyendo giros y detección de botones. Utiliza el `DriveBase` de Pybricks para simplificar el control de los motores.
+La clase `Robot` facilita el control de movimientos básicos del robot, gestión de sensores y motores.
 
-### Métodos Principales
-- `__init__(self, HUB, MotorI, MotorD, SensorColorI, SensorColorD)`: Constructor de la clase.
-- `button_pressed(self, button)`: Verifica si un botón específico está presionado.
-- `wait_button(self, button)`: Espera hasta que un botón específico sea presionado.
-- `girar(self, angulo, velocidad=100)`: Gira el robot un ángulo específico.
+### Atributos
+- `brick`: Instancia de `PrimeHub`.
+- `mI`: Motor izquierdo.
+- `mD`: Motor derecho.
+- `sI`: Sensor de color izquierdo.
+- `sD`: Sensor de color derecho.
+- `db`: Base de conducción (`DriveBase`).
+
+### Métodos
+- `__init__(HUB, MotorI, MotorD, SensorColorI, SensorColorD)`: Inicializa el robot.
+- `button_pressed(button)`: Verifica si un botón está presionado.
+- `wait_button(button)`: Espera hasta que se presione un botón específico.
+- `buttopn_program_stop(button)`: Establece un botón para detener el programa.
+- `girar(angulo, velocidad=100)`: Gira el robot un ángulo específico a una velocidad dada.
 
 ### Ejemplo de Uso
 ```python
-miRobot = Robot(HUB=PrimeHub(), MotorI=Motor(Port.A), MotorD=Motor(Port.B),
-                SensorColorI=ColorSensor(Port.C), SensorColorD=ColorSensor(Port.D))
-miRobot.girar(90)
+robot = Robot(HUB=PrimeHub(), MotorI=Motor(Port.A), MotorD=Motor(Port.B),
+              SensorColorI=ColorSensor(Port.C), SensorColorD=ColorSensor(Port.D))
+robot.girar(90)
+
+
+## Clase Instrumento
+
+### Descripción
+La clase `Instrumento` está diseñada para controlar un único instrumento o motor adicional en un robot LEGO® SPIKE™ Prime. Facilita operaciones como la calibración del motor a un ángulo específico y el movimiento hacia un ángulo objetivo dentro de límites predefinidos.
+
+### Atributos
+- `instrumento`: Motor asociado al instrumento. Se espera que sea una instancia de `Motor` de Pybricks.
+- `ls` (limite_superior): El límite superior del ángulo que el instrumento puede alcanzar.
+- `li` (limite_inferior): El límite inferior del ángulo que el instrumento puede alcanzar.
+
+### Métodos
+#### `__init__(motor_instrumento, limite_superior, limite_inferior)`
+Constructor de la clase `Instrumento`. Inicializa un nuevo instrumento con un motor y límites de ángulo.
+
+- **Parámetros:**
+  - `motor_instrumento`: Instancia de `Motor` que controla el instrumento.
+  - `limite_superior`: Límite superior del ángulo para el movimiento del instrumento.
+  - `limite_inferior`: Límite inferior del ángulo para el movimiento del instrumento.
+
+#### `calibrar(set_angulo=0)`
+Calibra el instrumento a un ángulo inicial. Útil para establecer un punto de referencia para movimientos posteriores.
+
+- **Parámetros:**
+  - `set_angulo`: Ángulo al cual el instrumento debe ser calibrado. El valor predeterminado es 0.
+
+#### `mover(angulo_objetivo, velocidad=100)`
+Mueve el instrumento a un ángulo objetivo, respetando los límites superior e inferior establecidos.
+
+- **Parámetros:**
+  - `angulo_objetivo`: El ángulo al cual el instrumento debe moverse.
+  - `velocidad`: La velocidad a la cual se realiza el movimiento. El valor predeterminado es 100.
+
+### Ejemplo de Uso
+Este ejemplo muestra cómo crear una instancia de `Instrumento`, calibrarlo y luego moverlo a un ángulo de 90 grados.
+
+```python
+from pybricks.pupdevices import Motor
+from pybricks.parameters import Port
+
+# Creación de la instancia del instrumento
+motor_instrumento = Motor(Port.A) # Asume que el motor está conectado al puerto A
+instrumento = Instrumento(motor_instrumento=motor_instrumento, limite_superior=180, limite_inferior=0)
+
+# Calibración del instrumento
+instrumento.calibrar()
+
+# Mover el instrumento a un ángulo de 90 grados
+instrumento.mover(angulo_objetivo=90)
+
