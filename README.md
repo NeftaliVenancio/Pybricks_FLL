@@ -138,3 +138,22 @@ instrumentoDoble.mover(45, 100)
 # Imprimir el ángulo actual de los instrumentos
 instrumentoDoble.print_angle()
 
+```
+
+## Cómo usar en tu proyecto
+
+Para incorporar el módulo Pybricks_FLL en tu proyecto y aprovechar sus funcionalidades para competencias de robótica con LEGO® Spike Prime, sigue estos pasos:
+
+1. Asegúrate de tener instalado Pybricks en tu entorno de desarrollo.
+2. Descarga los archivos del repositorio desde [Pybricks_FLL](https://github.com/NeftaliVenancio/Pybricks_FLL/tree/main).
+3. Incluye los archivos descargados en tu proyecto para comenzar a utilizar las clases `Robot`, `Instrumento`, e `InstrumentoDoble`.
+
+## Uso con Pybricks Beta
+
+Para ejecutar código utilizando Pybricks Beta:
+
+1. Visita el [IDE online de Pybricks Beta](https://beta.pybricks.com).
+2. Sigue las instrucciones del IDE para cargar tu código y conectar tu dispositivo LEGO® SPIKE™ Prime.
+3. Una vez conectado, podrás ejecutar tu código y ver los resultados en tiempo real.
+
+Recuerda que Pybricks Beta te permite probar las últimas funcionalidades de Pybricks, pero puede incluir características experimentales que aún están en desarrollo.
