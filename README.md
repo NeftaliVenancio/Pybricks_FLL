@@ -6,14 +6,14 @@ Se ha construido con la base de conocimientos que el equipo ha generado a lo lar
 
 Codificado en Veracruz, Mexico con ❤️ por:
 
- - Rodrgio Kai Cabrera
+ - Rodrigo Kai Cabrera
  - Neftali Caicero Venancio
  - Jose Pablo Contreras Dominguez
  - Scarlett Elisett Sarabia Barradas
  - Camila Navarrete Alarcón
  - Cuauhtemoc Fuentes Navarro
  - Mauricio Lascurain Ramirez
- - André MArtinez Vega
+ - André Martinez Vega
 
 
 
