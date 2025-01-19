@@ -27,6 +27,9 @@ class Robot:
         girar: Gira el robot un ángulo específico a una velocidad dada.
     """
 
+    d_rueda = 55 #Diametro de la rueda en mm
+    d_eje = 125 #Distancia entre las ruedas en mm (eje)
+        
     def __init__(self, HUB=PrimeHub, MotorI=Motor, MotorD=Motor, SensorColorI=ColorSensor, SensorColorD=ColorSensor):
         """
         Inicializa el robot con los motores y sensores especificados.
@@ -38,29 +41,18 @@ class Robot:
             SensorColorI (ColorSensor): Sensor de color conectado a un puerto izquierdo.
             SensorColorD (ColorSensor): Sensor de color conectado a un puerto derecho.
         """
-        self.brick = HUB
+        self._brick = HUB
 
-        self.mI = MotorI
-        self.mD = MotorD
-        self.sI = SensorColorI
-        self.sD = SensorColorD
+        self._mI = MotorI
+        self._mD = MotorD
+        self._sI = SensorColorI
+        self._sD = SensorColorD
 
-        self.ref_black = 35
+        self._db = DriveBase(self.mI, self.mD, self.d_rueda, self.d_eje)
+        self._db.use_gyro(True)
 
-        self.d_rueda = 55
-        self.d_eje = 115
-
-        self.db = DriveBase(self.mI, self.mD, self.d_rueda, self.d_eje)
-        self.db.use_gyro(True)
-
-        self.p_ant = 0
-        self.e1 = 0
-        self.e2 = 0
-        self.e3 = 0
-        self.e4 = 0
-        self.e5 = 0
-        self.e6 = 0
-
+        moviento = self._db
+        
     def button_pressed(self, button=Button):
         """
         Verifica si un botón específico está presionado.
@@ -71,7 +63,7 @@ class Robot:
         Retorna:
             bool: True si el botón está presionado, False en caso contrario.
         """
-        presed = self.brick.buttons.pressed()
+        presed = self._brick.buttons.pressed()
         return button in presed
 
     def wait_button(self, button=Button):
@@ -82,12 +74,12 @@ class Robot:
             button (Button): El botón a esperar.
         """
         while True:
-            presed = self.brick.buttons.pressed()
+            presed = self._brick.buttons.pressed()
             if button in presed:
                 print(button)
                 break
 
-        while any(self.brick.buttons.pressed()):
+        while any(self._brick.buttons.pressed()):
             wait(10)
 
     def buttopn_program_stop(self, button=Button):
@@ -97,9 +89,9 @@ class Robot:
         Parámetros:
             button (Button): El botón para detener el programa.
         """
-        self.brick.system.set_stop_button(button)
+        self._brick.system.set_stop_button(button)
 
-    def girar(self, angulo, velocidad=150):
+    def girar(self, angulo, velocidad=150, esperar = False):
         """
         Gira el robot un ángulo específico a una velocidad dada.
         
@@ -107,104 +99,18 @@ class Robot:
             angulo (int): El ángulo de giro en grados.
             velocidad (int): La velocidad de giro.
         """
-        self.db.reset()
-
-        #Corrige angulo por desviación de 5º    
-        if angulo > 0:
-            
-            angulo = angulo + 5
-
-        elif angulo < 0: 
-
-            angulo = angulo - 5
         
-        self.db.use_gyro(True)
-        self.db.settings(turn_rate=velocidad)
-        self.db.turn(angulo, then=Stop.HOLD)
+        self._db.reset()
+        self._db.settings(turn_rate=velocidad)
+        self._db.turn(angulo,Stop.HOLD,wait = esperar)
 
-    def calibrarNegro(self, button_start = Button.RIGHT, muestras = 10):
-        cont = 0
-        prom = 0
-        lec1 = 0
-        lec2 = 0
-
-        while True:
-            presed = self.brick.buttons.pressed()
-            if button in presed:
-                print(button)
-                break
-        while any(self.brick.buttons.pressed()):
-            wait(10)
-
-        for i in range(1,muestras+1):
-            lec1 += self.sD.reflection()
-            lec2 += self.sI.reflection()
-            wait(10)
+    def angulo_actual(self):
+        """
+        Retorna el ángulo actual del robot.
         
-        lec1 = lec1/muestras
-        lec2 = lec2/muestras
+        Retorna:
+            int: El ángulo actual del robot.
+        """
+        return self._db.angle()
 
-        self.ref_black = (lec1+lec2)/2
-
-        print(self.ref_black)
-
-    def seguir_linea(self, velocidad = 50, LineaIzquierda = True, LineaDerecha = False):
-        
-
-        if velocidad > 100:
-            velocidad = 100
-            print("Velocidad maxima es 100%")
-
-        if LineaIzquierda == True:
-
-            if LineaDerecha == True:
-
-                print("sigue linea con ambos sensores")
-                
-                lecI = self.sI.reflection()
-                lecD = self.sD.reflection()
-
-            else:
-                print("sigue linea con sensor izquierdo")
-                lecI = self.sI.reflection()
-
-                error = lecI - 50
-                correction = error * 2
-
-                if lecI < self.ref_black :
-                    self.mD.dc(velocidad)
-                    self.mI.dc(0)
-                elif lecI < 90:
-                    self.mD.dc(velocidad)
-                    self.mI.dc(velocidad)
-
-                else:
-                    self.mD.dc(0)
-                    self.mI.dc(velocidad)
-
-        elif LineaDerecha == True:
-                print("sigue linea con sensor derecho")
-                
-                lecD = self.sD.reflection()
-                if lecD < self.ref_black :
-                    self.mI.dc(velocidad)
-                    self.mD.dc(0)
-                else:
-                    self.mI.dc(0)
-                    self.mD.dc(velocidad)
-
-    def girarHastaLinea(self, sensor = ColorSensor, velocidad = 50 ):
-
-        lec = sensor.reflection()
-
-        if lec > self.ref_black:
-
-            if velocidad < 0:
-                self.mD.dc(-velocidad)
-                self.mI.dc(velocidad)
-            elif velocidad > 0:
-                self.mD.dc(-velocidad)
-                self.mI.dc(velocidad)
-        else:
-            self.mI.dc(0)
-            self.mD.dc(0)
+    

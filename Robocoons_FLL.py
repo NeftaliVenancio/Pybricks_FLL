@@ -40,10 +40,10 @@ class Robot:
         """
         self.brick = HUB
 
-        self.mI = MotorI
-        self.mD = MotorD
-        self.sI = SensorColorI
-        self.sD = SensorColorD
+        self._mI = MotorI
+        self._mD = MotorD
+        self._sI = SensorColorI
+        self._sD = SensorColorD
 
         self.ref_black = 35
 
