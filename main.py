@@ -1,4 +1,4 @@
-from Robot import *
+from . import Robot
 
 hub = PrimeHub()
 

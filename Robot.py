@@ -4,8 +4,6 @@ from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait, StopWatch
 
-spike = PrimeHub()
-
 class Robot:
     """
     Clase Robot diseñada para interactuar con el LEGO® SPIKE™ Prime.
